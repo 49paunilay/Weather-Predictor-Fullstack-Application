@@ -5,3 +5,5 @@ class weatherData(BaseModel):
     b : float 
     c : float 
     d : float
+    e : float
+    f : float
