@@ -1,12 +1,13 @@
 # 1. Library imports
+from pyexpat import model
 import uvicorn
 from fastapi import FastAPI
 from Request import weatherData
-import numpy as np
 import pickle
-import pandas as pd
 # 2. Create the app object
 app = FastAPI()
+pickle_in = open("model.pkl","rb")
+model = pickle.load(pickle_in)
 
 # 3. Index route, opens automatically on http://127.0.0.1:8000
 @app.get('/')
@@ -23,12 +24,14 @@ def get_name(name: str):
 #    JSON data and return the predicted Bank Note with the confidence
 @app.post('/predict')
 def predict_weather(data:weatherData):
-    data = data.dict()
-    A =data['a']
-    B =data['b']
-    C =data['c']
-    D =data['d']
-    prep = A+B+C+D
+    dataset = data.dict()
+    A =dataset['a']
+    B =dataset['b']
+    C =dataset['c']
+    D =dataset['d']
+    E =dataset['e']
+    F =dataset['f']
+    prep = model.predict([[A,B,C,D,E,F]])
     return {
         'prediction': prep
     }
